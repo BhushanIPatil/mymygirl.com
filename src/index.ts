@@ -5,6 +5,7 @@ import { Hono } from 'hono';
 import type { Env } from './types';
 import { layout } from './views/layout';
 import { homeView } from './views/home';
+import { escapeHtml } from './lib/html';
 import { handbagDescription, isHandbagCategory } from './views/handbags';
 import { productsView } from './views/products';
 import { faqView, faqStructuredData } from './views/faq';
@@ -50,6 +51,19 @@ app.get('/', async (c) => {
 // ---------------------------------------------------------------------
 // All products (supports ?code= and ?category= and ?page=)
 // ---------------------------------------------------------------------
+app.get('/categories', async (c) => {
+  const { products } = await getProducts(c.env);
+  const categories = getCategories(products);
+  return c.html(layout({
+    env: c.env,
+    title: `All categories | ${c.env.SITE_NAME}`,
+    description: `Browse all product categories on ${c.env.SITE_NAME}.`,
+    path: '/categories',
+    bodyHtml: `<div class="page-header"><div class="wrap"><h1>All categories</h1></div></div>
+      <section class="section wrap"><div class="chip-row">${categories.map(c => `<a class="chip" href="/category/${categoryToSlug(c)}">${escapeHtml(c)}</a>`).join('')}</div></section>`,
+  }));
+});
+
 app.get('/products', async (c) => {
   const { products } = await getProducts(c.env);
   const categories = getCategories(products);

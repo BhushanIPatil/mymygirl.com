@@ -49,7 +49,7 @@ export function productsView(opts: {
     </div>
   </div>
   <section class="section wrap catalog-layout">
-    <aside class="filter-sidebar" aria-label="Product filters">
+    <aside id="catalog-filters" class="filter-sidebar" aria-label="Product filters">
       <details class="filter-panel" open>
         <summary>Filters <span class="filter-summary-count">${applied.length ? applied.length + ' applied' : 'Refine results'}</span></summary>
         <div class="filter-content">
@@ -78,7 +78,7 @@ export function productsView(opts: {
         <p role="status">${totalItems ? `Showing <strong>${(page - 1) * pageSize + 1}–${(page - 1) * pageSize + pageItems.length}</strong> of <strong>${totalItems}</strong> products` : 'No products match your filters'}</p>
         <div class="sort-control"><label for="product-sort">Sort by</label><select id="product-sort" name="sort" form="product-filters">
           ${[['newest', 'Newest first'], ['oldest', 'Oldest first'], ['name-asc', 'Name: A–Z'], ['name-desc', 'Name: Z–A']].map(([value, label]) => `<option value="${value}"${sort === value ? ' selected' : ''}>${label}</option>`).join('')}
-        </select><button class="btn btn-outline sort-submit" form="product-filters" type="submit">Sort</button></div>
+        </select><button class="filter-toggle" type="button" aria-label="Toggle product filters" aria-controls="catalog-filters" aria-expanded="false" hidden><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="var(--card)"/><circle cx="15" cy="17" r="3" fill="var(--card)"/></svg></button><button class="btn btn-outline sort-submit" form="product-filters" type="submit">Sort</button></div>
       </div>
       ${applied.length ? `<div class="applied-filters" aria-label="Applied filters">${applied.map(([key, label]) => `<a class="applied-filter" href="${link(key)}" aria-label="Remove ${escapeHtml(label)}">${escapeHtml(label)} <span aria-hidden="true">&times;</span></a>`).join('')}<a class="see-all" href="/products">Clear all</a></div>` : ''}
       ${from && to && from > to ? '<p class="filter-error" role="alert">Choose a To date on or after the From date.</p>' : ''}
@@ -91,8 +91,25 @@ export function productsView(opts: {
     (() => {
       const form = document.getElementById('product-filters');
       const panel = document.querySelector('.filter-panel');
+      const sidebar = document.querySelector('.filter-sidebar');
+      const toggle = document.querySelector('.filter-toggle');
+      const catalog = document.querySelector('.catalog-layout');
+      const toolbar = document.querySelector('.results-toolbar');
       const mobile = matchMedia('(max-width: 720px)');
-      const adapt = () => { panel.open = !mobile.matches; };
+      const adapt = () => {
+        panel.open = !mobile.matches;
+        sidebar.hidden = mobile.matches;
+        sidebar.classList.toggle('is-collapsible', mobile.matches);
+        toggle.hidden = !mobile.matches;
+        toggle.setAttribute('aria-expanded', 'false');
+        if (mobile.matches) toolbar.after(sidebar);
+        else catalog.prepend(sidebar);
+      };
+      toggle.addEventListener('click', () => {
+        sidebar.hidden = !sidebar.hidden;
+        panel.open = !sidebar.hidden;
+        toggle.setAttribute('aria-expanded', String(!sidebar.hidden));
+      });
       adapt();
       mobile.addEventListener('change', adapt);
       document.getElementById('product-sort').addEventListener('change', () => form.requestSubmit());

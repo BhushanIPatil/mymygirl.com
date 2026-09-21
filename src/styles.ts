@@ -142,13 +142,14 @@ a { color: inherit; text-decoration: none; }
 
 .hero .wrap {
   display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 40px;
   align-items: center;
 }
 
 @media (max-width: 860px) {
-  .hero .wrap { grid-template-columns: 1fr; }
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); }
+  .hero .code-search { max-width: none; width: 100%; }
 }
 
 .hero h1 {
@@ -280,6 +281,8 @@ a { color: inherit; text-decoration: none; }
 .home-categories { padding-bottom: 16px; }
 .home-categories .section-heading { margin-bottom: 16px; }
 .home-fresh { padding-top: 16px; }
+.home-content { padding-block: 20px; }
+.home-content h2:first-child { margin-top: 0; }
 .products-header { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .products-header > div { flex: 1; }
 .products-header .code-search { width: 42%; flex-shrink: 0; }
@@ -310,6 +313,8 @@ a { color: inherit; text-decoration: none; }
 .sort-control label { font-weight: 800; white-space: nowrap; }
 .sort-submit { padding: 8px 14px; }
 .sort-submit[hidden] { display: none; }
+.filter-toggle { display: none; }
+.filter-sidebar[hidden] { display: none; }
 .applied-filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 22px; font-size: 0.78rem; }
 .applied-filter { display: inline-flex; gap: 10px; align-items: center; background: var(--pink-pale); color: var(--chocolate); border-radius: 999px; padding: 6px 12px; }
 .applied-filter:hover { background: var(--bg-soft); }
@@ -324,6 +329,11 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 720px) {
   .catalog-layout { grid-template-columns: 1fr; gap: 20px; padding-top: 22px; }
   .filter-panel > summary { padding: 14px 18px; }
+  .filter-toggle:not([hidden]) { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; width: 36px; height: 36px; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); color: var(--chocolate); cursor: pointer; }
+  .filter-sidebar.is-collapsible { margin-bottom: 20px; }
+  .filter-sidebar.is-collapsible .filter-panel > summary { display: none; }
+  .sort-control { width: 100%; }
+  .sort-control select { flex: 1; }
   .catalog-results .product-grid { gap: 14px; }
 }
 /* ---------- Category chips ---------- */
@@ -395,7 +405,7 @@ a { color: inherit; text-decoration: none; }
 .product-card .thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .product-card .body {
@@ -414,7 +424,7 @@ a { color: inherit; text-decoration: none; }
 }
 
 .product-card h3 {
-  font-size: 1rem;
+  font-size: 0.88rem;
   font-weight: 800;
   margin: 0;
   color: var(--chocolate);
@@ -428,6 +438,13 @@ a { color: inherit; text-decoration: none; }
 }
 
 .product-card .btn { margin-top: 8px; }
+.product-card details > summary { list-style: none; cursor: pointer; }
+.product-card details > summary::-webkit-details-marker { display: none; }
+.product-card .text-toggle { color: var(--pink-deep); font-size: 0.75rem; font-weight: 400; text-decoration: underline; }
+.product-card .name-full, .product-card .when-open { display: none; }
+.product-card details[open] .name-full, .product-card details[open] .when-open { display: inline; }
+.product-card details[open] .name-short, .product-card details[open] .when-closed { display: none; }
+.product-description p { margin: 6px 0 0; font-size: 0.78rem; font-weight: 400; color: var(--chocolate-soft); white-space: pre-line; overflow-wrap: anywhere; }
 
 .empty-state {
   text-align: center;

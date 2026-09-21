@@ -1,4 +1,4 @@
-import { brandText } from '../lib/html';
+import { brandText, escapeHtml } from '../lib/html';
 import { heroCarousel } from './heroCarousel';
 import type { Product } from '../types';
 import { categoryToSlug, filterProducts } from '../lib/products';
@@ -35,8 +35,10 @@ export function homeView(opts: { products: Product[]; categories: string[]; site
     </div>
     <div class="chip-row">
       ${categories
-        .map((c) => `<a class="chip" href="/category/${categoryToSlug(c)}">${c}</a>`)
+        .slice(0, 5)
+        .map((c) => `<a class="chip" href="/category/${categoryToSlug(c)}">${escapeHtml(c)}</a>`)
         .join('\n')}
+      ${categories.length > 5 ? '<a class="chip" href="/categories">More...</a>' : ''}
     </div>
   </section>
 
@@ -51,13 +53,13 @@ export function homeView(opts: { products: Product[]; categories: string[]; site
     ${productGrid(featured)}
   </section>
 
-  <section class="section wrap prose">
+  <section class="section wrap prose home-content">
     <h2>Handbags for women, chosen for everyday style</h2>
     <p>Explore our handbag picks alongside beauty and jewellery finds. Choosing ladies handbags for work, college or a day out? Start with the size, strap comfort and space you need, then check the retailer's material details and current price.</p>
     <p>${handbagCategory ? `<a href="/category/${categoryToSlug(handbagCategory)}">Browse women's handbags</a> or ` : ''}<a href="/faq#handbag-faq">Read our handbag shopping and care FAQ</a> for help comparing branded bags, cleaning leather and storing your favourites.</p>
   </section>
 
-  <section class="section wrap prose">
+  <section class="section wrap prose home-content">
     <h2>How ${brandText(siteName)} works</h2>
     <p>Every product we post on Instagram, Facebook and YouTube carries a short code, like <strong>MG001</strong>. Type that code into the search bar above, or scroll the shop page, to jump straight to the piece you saw. Tap "Shop now" and you'll land on the retailer — usually Amazon — to complete your purchase safely with their own checkout, delivery and returns.</p>
     <p>We don't hold stock or handle payments ourselves; we're a curation layer that saves you the scroll. See our <a href="/disclosure">affiliate disclosure</a> for how we earn from the links we share.</p>

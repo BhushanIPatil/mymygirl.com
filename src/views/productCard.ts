@@ -11,6 +11,7 @@ function escapeHtml(str: string): string {
 
 export function productCard(p: Product, opts: { highlight?: boolean } = {}): string {
   const highlightClass = opts.highlight ? ' is-matched' : '';
+  const nameCharacters = Array.from(p.name);
   return `
   <article class="product-card${highlightClass}" id="product-${escapeHtml(p.code)}">
     <a class="thumb" href="/go/${encodeURIComponent(p.code)}" rel="sponsored nofollow noopener" target="_blank" aria-label="View ${escapeHtml(p.name)} on the affiliate store">
@@ -18,8 +19,14 @@ export function productCard(p: Product, opts: { highlight?: boolean } = {}): str
     </a>
     <div class="body">
       <a class="category-tag" href="/category/${categoryToSlug(p.category)}">${escapeHtml(p.category)}</a>
-      <h3>${escapeHtml(p.name)}</h3>
       <div class="code">Code: ${escapeHtml(p.code)}</div>
+      ${nameCharacters.length > 30 ? `<details class="product-name">
+        <summary><h3><span class="name-short">${escapeHtml(nameCharacters.slice(0, 30).join(''))}&hellip;</span><span class="name-full">${escapeHtml(p.name)}</span></h3><span class="text-toggle"><span class="when-closed">See more</span><span class="when-open">See less</span></span></summary>
+      </details>` : `<h3>${escapeHtml(p.name)}</h3>`}
+      ${p.description?.trim() ? `<details class="product-description">
+        <summary class="text-toggle"><span class="when-closed">Show description</span><span class="when-open">Hide description</span></summary>
+        <p>${escapeHtml(p.description)}</p>
+      </details>` : ''}
       <a class="btn btn-primary btn-block" href="/go/${encodeURIComponent(p.code)}" rel="sponsored nofollow noopener" target="_blank">Shop now</a>
     </div>
   </article>`;

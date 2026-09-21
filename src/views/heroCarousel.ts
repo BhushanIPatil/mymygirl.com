@@ -52,6 +52,11 @@ export function heroCarousel(products: Product[]): string {
       }).observe(track);
       update(0);
       dots.hidden = false;
+      setInterval(() => {
+        if (!document.hidden && !matchMedia('(prefers-reduced-motion: reduce)').matches && !carousel.matches(':hover, :focus-within')) {
+          move((active + 1) % count);
+        }
+      }, 1500);
     })();
   </script>`;
 }
