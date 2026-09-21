@@ -4,7 +4,7 @@
   "private": true,
   "description": "MyMyGirl.com — hyperlocal-style affiliate product catalog, served from Cloudflare Workers with Google Sheets as the product database.",
   "scripts": {
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --local",
     "deploy": "wrangler deploy",
     "tail": "wrangler tail"
   },

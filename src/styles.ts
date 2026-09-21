@@ -538,6 +538,7 @@ a { color: inherit; text-decoration: none; }
 /* ---------- Contact form ---------- */
 
 .contact-header { text-align: center; }
+.contact-header p { margin-inline: auto; }
 
 .contact-form-frame { display: block; width: 100%; height: 1100px; border: 0; }
 .contact-form-help { text-align: center; font-size: 0.9rem; color: var(--chocolate-soft); }

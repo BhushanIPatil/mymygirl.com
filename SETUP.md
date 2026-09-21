@@ -82,8 +82,10 @@ npx wrangler secret put RESYNC_SECRET
 cp .dev.vars.example .dev.vars
 ```
 
-Edit `.dev.vars` and either leave the demo placeholders (site will show
-8 sample products) or fill in your real credentials to test a real sync.
+If `.dev.vars` already exists, preserve it instead of copying over it.
+Fill in your real credentials and set `LOCAL_SYNC_ON_EMPTY="true"` to load
+products into local KV on the first request. Leave it `"false"` to preview
+sample products without credentials. See LOCAL-CONFIG.md for details.
 
 ```bash
 npm run dev

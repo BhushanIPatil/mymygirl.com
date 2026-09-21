@@ -22,6 +22,9 @@ export interface Env {
   GOOGLE_SHEET_ID: string;
   SHEET_RANGE: string;
 
+  // Opt-in local cache bootstrap; set only in .dev.vars.
+  LOCAL_SYNC_ON_EMPTY?: string;
+
   // Secrets (wrangler secret put / .dev.vars)
   CONTACT_FORM_URL?: string;
   GOOGLE_SERVICE_ACCOUNT_EMAIL: string;

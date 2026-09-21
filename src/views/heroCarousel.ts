@@ -6,7 +6,7 @@ export function heroCarousel(products: Product[]): string {
   return `<div class="hero-carousel" role="region" aria-roledescription="carousel" aria-label="Featured products">
     <div class="carousel-track" tabindex="0" aria-label="Swipe or use arrow keys to browse featured products">
       ${products.map((p, i) => `<div class="carousel-slide" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${products.length}">
-        <a href="/go/${encodeURIComponent(p.code)}" rel="sponsored nofollow" aria-label="Shop ${escapeHtml(p.name)}">
+        <a href="/go/${encodeURIComponent(p.code)}" rel="sponsored nofollow noopener" target="_blank" aria-label="Shop ${escapeHtml(p.name)}">
           <img src="${escapeHtml(p.imageUrl)}" alt="${escapeHtml(p.name)}" loading="${i === 0 ? 'eager' : 'lazy'}" />
         </a>
       </div>`).join('')}

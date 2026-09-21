@@ -3,10 +3,12 @@ import { heroCarousel } from './heroCarousel';
 import type { Product } from '../types';
 import { categoryToSlug, filterProducts } from '../lib/products';
 import { productGrid } from './productCard';
+import { isHandbagCategory } from './handbags';
 
 export function homeView(opts: { products: Product[]; categories: string[]; siteName: string }): string {
   const { products, categories, siteName } = opts;
-  const featured = filterProducts(products, { fresh: true }).slice(0, 8);
+  const featured = filterProducts(products, { sort: 'newest' }).slice(0, 10);
+  const handbagCategory = categories.find(isHandbagCategory);
   const heroImages = products.filter(p => ['carausel', 'carousel'].includes(p.type?.trim().toLowerCase() || ''));
 
   return `
@@ -41,12 +43,18 @@ export function homeView(opts: { products: Product[]; categories: string[]; site
   <section class="section wrap home-fresh">
     <div class="section-heading">
       <div>
-        <h2>Fresh picks</h2>
-        <p>Added in the last seven days.</p>
+        <h2>Latest picks</h2>
+        <p>Explore our latest hand-picked products.</p>
       </div>
       <a class="see-all" href="/products">See all products →</a>
     </div>
-    ${featured.length ? productGrid(featured) : '<p>No new picks in the last seven days. <a class="see-all" href="/products">Browse all products &rarr;</a></p>'}
+    ${productGrid(featured)}
+  </section>
+
+  <section class="section wrap prose">
+    <h2>Handbags for women, chosen for everyday style</h2>
+    <p>Explore our handbag picks alongside beauty and jewellery finds. Choosing ladies handbags for work, college or a day out? Start with the size, strap comfort and space you need, then check the retailer's material details and current price.</p>
+    <p>${handbagCategory ? `<a href="/category/${categoryToSlug(handbagCategory)}">Browse women's handbags</a> or ` : ''}<a href="/faq#handbag-faq">Read our handbag shopping and care FAQ</a> for help comparing branded bags, cleaning leather and storing your favourites.</p>
   </section>
 
   <section class="section wrap prose">

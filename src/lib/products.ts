@@ -1,5 +1,6 @@
 import type { Env, Product } from '../types';
-import { getCachedProducts } from './cache';
+import { getCachedProducts, setCachedProducts } from './cache';
+import { fetchProductsFromSheet } from './sheets';
 import { demoProducts } from './demoData';
 
 export interface ProductSource {
@@ -7,15 +8,27 @@ export interface ProductSource {
   isDemoData: boolean;
 }
 
+let localSync: Promise<ProductSource> | null = null;
+
 /**
- * Reads products for a normal page render. Never calls the Google Sheets
- * API directly — that only happens via /api/resync. Falls back to demo
- * products so the site is never empty before the first sync.
+ * Reads cached products. Production syncs through /api/resync; local
+ * development can opt into loading an empty cache through .dev.vars.
  */
 export async function getProducts(env: Env): Promise<ProductSource> {
   const cached = await getCachedProducts(env);
-  if (cached && cached.length > 0) {
+  if (cached && (cached.length > 0 || env.LOCAL_SYNC_ON_EMPTY === 'true')) {
     return { products: cached, isDemoData: false };
+  }
+  if (env.LOCAL_SYNC_ON_EMPTY === 'true') {
+    // Share an in-flight request when several local pages load together.
+    if (!localSync) {
+      localSync = (async () => {
+        const products = await fetchProductsFromSheet(env);
+        await setCachedProducts(env, products);
+        return { products, isDemoData: false };
+      })().finally(() => { localSync = null; });
+    }
+    return localSync;
   }
   return { products: demoProducts, isDemoData: true };
 }

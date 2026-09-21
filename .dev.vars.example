@@ -1,12 +1,15 @@
-# Copy this file to ".dev.vars" (same folder) and fill in real values.
-# ".dev.vars" is gitignored — it will never be committed.
-# These are DEMO placeholders only; the site runs fine without real ones
-# (it falls back to sample demo products) so you can preview it first.
-
-GOOGLE_SERVICE_ACCOUNT_EMAIL="demo-service-account@demo-project.iam.gserviceaccount.com"
-GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEY\n-----END PRIVATE KEY-----\n"
-GOOGLE_SHEET_ID="demo-sheet-id"
-RESYNC_SECRET="demo-resync-secret-change-me"
-
-# Full published Google Forms URL ending in /viewform.
+# Copy to .dev.vars and fill in your credentials. Never commit the real file.
+# Wrangler loads .dev.vars for local development; deployment does not upload it.
+GOOGLE_SERVICE_ACCOUNT_EMAIL=""
+GOOGLE_PRIVATE_KEY=""
+RESYNC_SECRET=""
 CONTACT_FORM_URL=""
+
+# GOOGLE_SHEET_ID inherits wrangler.toml. Uncomment to use a different sheet.
+# GOOGLE_SHEET_ID="your-sheet-id"
+SHEET_RANGE="Products!A1:J"
+SITE_URL="http://localhost:8787"
+
+# Set true after entering credentials to load an empty local cache from Sheets.
+# Leave false to preview demo products without Google credentials.
+LOCAL_SYNC_ON_EMPTY="false"

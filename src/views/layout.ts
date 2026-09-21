@@ -1,4 +1,4 @@
-import { brandText } from '../lib/html';
+import { brandText, escapeHtml } from '../lib/html';
 import { globalStyles } from '../styles';
 import type { Env } from '../types';
 
@@ -26,16 +26,26 @@ export function layout(opts: LayoutOptions): string {
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SGCHT34RQH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-SGCHT34RQH');
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>${title}</title>
-  <meta name="description" content="${description}" />
-  <link rel="canonical" href="${canonical}" />
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(description)}" />
+  <link rel="canonical" href="${escapeHtml(canonical)}" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="${env.SITE_NAME}" />
-  <meta property="og:title" content="${title}" />
-  <meta property="og:description" content="${description}" />
-  <meta property="og:url" content="${canonical}" />
+  <meta property="og:site_name" content="${escapeHtml(env.SITE_NAME)}" />
+  <meta property="og:title" content="${escapeHtml(title)}" />
+  <meta property="og:description" content="${escapeHtml(description)}" />
+  <meta property="og:url" content="${escapeHtml(canonical)}" />
+  <meta name="twitter:title" content="${escapeHtml(title)}" />
+  <meta name="twitter:description" content="${escapeHtml(description)}" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -80,7 +90,7 @@ export function layout(opts: LayoutOptions): string {
         <h4>SHOP</h4>
         <ul>
           <li><a href="/products">All products</a></li>
-          <li><a href="/faq">How codes work</a></li>
+          <li><a href="/faq">Handbag care &amp; shopping FAQ</a></li>
         </ul>
       </div>
       <div>

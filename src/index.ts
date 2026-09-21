@@ -5,6 +5,7 @@ import { Hono } from 'hono';
 import type { Env } from './types';
 import { layout } from './views/layout';
 import { homeView } from './views/home';
+import { handbagDescription, isHandbagCategory } from './views/handbags';
 import { productsView } from './views/products';
 import { faqView, faqStructuredData } from './views/faq';
 import { aboutView } from './views/about';
@@ -38,8 +39,8 @@ app.get('/', async (c) => {
   return c.html(
     layout({
       env: c.env,
-      title: `${c.env.SITE_NAME} — Pretty finds, one code away`,
-      description: `Shop handbags, perfume, makeup and jewellery featured on ${c.env.SITE_NAME}'s Instagram, Facebook and YouTube. Search by product code or browse by category.`,
+      title: `Handbags for Women, Beauty & Jewellery | ${c.env.SITE_NAME}`,
+      description: `Discover handbags for women, beauty and jewellery at ${c.env.SITE_NAME}. Browse curated picks, search by product code and explore handbag care tips.`,
       path: '/',
       bodyHtml: body,
     }),
@@ -85,8 +86,10 @@ app.get('/products', async (c) => {
       env: c.env,
       title: codeQuery
         ? `Search "${codeQuery}" — ${c.env.SITE_NAME}`
-        : `Shop all products — ${c.env.SITE_NAME}`,
-      description: `Browse every product listed on ${c.env.SITE_NAME}, or search by the code from our Instagram, Facebook or YouTube posts.`,
+        : isHandbagCategory(categoryQuery)
+          ? `Handbags for Women & Ladies Handbags | ${c.env.SITE_NAME}`
+          : `Shop Handbags, Beauty & Jewellery | ${c.env.SITE_NAME}`,
+      description: isHandbagCategory(categoryQuery) ? handbagDescription : `Browse every product listed on ${c.env.SITE_NAME}, or search by the code from our Instagram, Facebook or YouTube posts.`,
       path: '/products',
       bodyHtml: body,
     }),
@@ -141,8 +144,8 @@ app.get('/category/:slug', async (c) => {
   return c.html(
     layout({
       env: c.env,
-      title: `${categoryName} — ${c.env.SITE_NAME}`,
-      description: `Shop our full ${categoryName.toLowerCase()} collection, featured on Instagram, Facebook and YouTube. Search by code or browse the full range.`,
+      title: isHandbagCategory(categoryName) ? `Handbags for Women & Ladies Handbags | ${c.env.SITE_NAME}` : `${categoryName} — ${c.env.SITE_NAME}`,
+      description: isHandbagCategory(categoryName) ? handbagDescription : `Shop our full ${categoryName.toLowerCase()} collection, featured on Instagram, Facebook and YouTube. Search by code or browse the full range.`,
       path: `/category/${slug}`,
       bodyHtml: body,
     }),
@@ -181,8 +184,8 @@ app.get('/faq', (c) =>
   c.html(
     layout({
       env: c.env,
-      title: `FAQ — ${c.env.SITE_NAME}`,
-      description: `Answers about product codes, affiliate links and how ${c.env.SITE_NAME} works.`,
+      title: `Handbag FAQ: Cleaning, Storage & Shopping | ${c.env.SITE_NAME}`,
+      description: 'Learn how to clean handbags at home, care for leather and store bags. Find answers about designer handbags, resale, product codes and affiliate shopping.',
       path: '/faq',
       bodyHtml: faqView(),
       structuredDataJson: faqStructuredData(),

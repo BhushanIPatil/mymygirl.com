@@ -37,7 +37,7 @@ let cachedToken: { token: string; expiresAt: number } | null = null;
 /**
  * Exchanges the service-account credentials for a short-lived OAuth2
  * access token that can call the Sheets API. Only ever called from the
- * /api/resync route — never on a normal visitor request.
+ * /api/resync route, or an explicitly enabled local cache bootstrap.
  */
 export async function getAccessToken(env: Env): Promise<string> {
   const now = Math.floor(Date.now() / 1000);

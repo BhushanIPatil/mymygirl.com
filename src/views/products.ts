@@ -2,6 +2,7 @@
 import { categoryToSlug } from '../lib/products';
 import { escapeHtml } from '../lib/html';
 import { productGrid } from './productCard';
+import { handbagGuide, isHandbagCategory } from './handbags';
 
 export function productsView(opts: {
   pageItems: Product[]; categories: string[]; activeCategory?: string | null;
@@ -38,8 +39,8 @@ export function productsView(opts: {
   <div class="page-header">
     <div class="wrap products-header">
       <div>
-        <h1>${escapeHtml(selectedCategory || 'All products')}</h1>
-        <p>Browse everything we've listed, or filter by category.</p>
+        <h1>${escapeHtml(isHandbagCategory(selectedCategory) ? 'Handbags for women' : selectedCategory || 'All products')}</h1>
+        <p>${isHandbagCategory(selectedCategory) ? 'Explore curated ladies handbags. Compare styles and check materials, dimensions and availability at the retailer.' : "Browse everything we've listed, or filter by category."}</p>
       </div>
       <form id="product-filters" class="code-search" action="/products" method="get">
         <input type="text" name="code" value="${escapeHtml(codeQuery || '')}" placeholder="Search by code" aria-label="Product code" />
@@ -85,6 +86,7 @@ export function productsView(opts: {
       ${totalPages > 1 ? '<nav class="pagination" aria-label="Pagination">' + Array.from({ length: totalPages }, (_, i) => i + 1).map(p => p === page ? '<span class="is-current" aria-current="page">' + p + '</span>' : '<a href="' + link(undefined, p) + '">' + p + '</a>').join('') + '</nav>' : ''}
     </div>
   </section>
+  ${isHandbagCategory(selectedCategory) ? handbagGuide() : ''}
   <script>
     (() => {
       const form = document.getElementById('product-filters');
