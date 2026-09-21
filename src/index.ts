@@ -1,3 +1,6 @@
+import logo from '../mymygirl_logo.png';
+import favicon from '../mymygirl_fav.png';
+import { normalizeDate } from './lib/products';
 import { Hono } from 'hono';
 import type { Env } from './types';
 import { layout } from './views/layout';
@@ -22,6 +25,8 @@ import { setCachedProducts, getLastSyncedAt } from './lib/cache';
 
 const app = new Hono<{ Bindings: Env }>();
 const PAGE_SIZE = 12;
+app.get('/mymygirl_logo.png', (c) => c.body(logo, 200, { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }));
+app.get('/mymygirl_fav.png', (c) => c.body(favicon, 200, { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }));
 
 // ---------------------------------------------------------------------
 // Home
@@ -50,15 +55,22 @@ app.get('/products', async (c) => {
 
   const codeQuery = c.req.query('code')?.trim() || null;
   const categoryQuery = c.req.query('category')?.trim() || null;
+  const sortQuery = c.req.query('sort') || 'newest';
+  const sort = ['newest', 'oldest', 'name-asc', 'name-desc'].includes(sortQuery) ? sortQuery : 'newest';
+  const fresh = c.req.query('fresh') === '1';
+  const from = normalizeDate(c.req.query('from'));
+  const to = normalizeDate(c.req.query('to'));
   const pageParam = parseInt(c.req.query('page') || '1', 10) || 1;
 
-  const filtered = filterProducts(products, { category: categoryQuery, code: codeQuery });
-  const { items, page, totalPages } = paginate(filtered, pageParam, PAGE_SIZE);
+  const filtered = filterProducts(products, { category: categoryQuery, code: codeQuery, fresh, from, to, sort });
+  const { items, page, totalPages, totalItems } = paginate(filtered, pageParam, PAGE_SIZE);
 
   const exactMatch = codeQuery ? findByCode(products, codeQuery) : null;
 
   const body = productsView({
     pageItems: items,
+    fresh, from, to, sort, totalItems, pageSize: PAGE_SIZE,
+    categoryCounts: Object.fromEntries(categories.map(category => [category, filterProducts(products, { category, code: codeQuery, fresh, from, to }).length])),
     categories,
     activeCategory: categoryQuery,
     codeQuery,
@@ -103,14 +115,24 @@ app.get('/category/:slug', async (c) => {
     );
   }
 
+  const sortQuery = c.req.query('sort') || 'newest';
+  const sort = ['newest', 'oldest', 'name-asc', 'name-desc'].includes(sortQuery) ? sortQuery : 'newest';
+  const fresh = c.req.query('fresh') === '1';
+  const from = normalizeDate(c.req.query('from'));
+  const to = normalizeDate(c.req.query('to'));
   const pageParam = parseInt(c.req.query('page') || '1', 10) || 1;
-  const filtered = filterProducts(products, { category: categoryName });
-  const { items, page, totalPages } = paginate(filtered, pageParam, PAGE_SIZE);
+  const codeQuery = c.req.query('code')?.trim() || null;
+  const filtered = filterProducts(products, { category: categoryName, code: codeQuery, fresh, from, to, sort });
+  const { items, page, totalPages, totalItems } = paginate(filtered, pageParam, PAGE_SIZE);
 
   const body = productsView({
     pageItems: items,
+    fresh, from, to, sort, totalItems, pageSize: PAGE_SIZE,
+    categoryCounts: Object.fromEntries(categories.map(category => [category, filterProducts(products, { category, code: codeQuery, fresh, from, to }).length])),
     categories,
     activeCategory: categoryName,
+    codeQuery,
+    matchedCode: codeQuery,
     page,
     totalPages,
     basePath: `/category/${slug}`,
@@ -187,7 +209,7 @@ app.get('/contact', (c) =>
       title: `Contact — ${c.env.SITE_NAME}`,
       description: `Get in touch with ${c.env.SITE_NAME} about a product, a link, or a request.`,
       path: '/contact',
-      bodyHtml: contactView(),
+      bodyHtml: contactView(c.env.CONTACT_FORM_URL),
     }),
   ),
 );

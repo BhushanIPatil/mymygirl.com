@@ -1,30 +1,36 @@
-export function contactView(): string {
+﻿import { escapeHtml } from '../lib/html';
+
+export function contactView(formUrl?: string): string {
+  let embedUrl: string | undefined;
+  let publicUrl: string | undefined;
+  try {
+    const url = new URL(formUrl || '');
+    if (url.origin === 'https://docs.google.com' && /^\/forms\/d\/e\/[A-Za-z0-9_-]+\/viewform\/?$/.test(url.pathname)) {
+      url.search = '';
+      url.hash = '';
+      publicUrl = url.toString();
+      url.searchParams.set('embedded', 'true');
+      embedUrl = url.toString();
+    }
+  } catch {
+    // Show a helpful fallback when configuration is missing or invalid.
+  }
+
   return `
-  <div class="page-header">
+  <div class="page-header contact-header">
     <div class="wrap">
       <h1>Get in touch</h1>
-      <p>Missing link, product request, or just want to say hi — we read everything.</p>
+      <p>Have a question, product request, or a broken link to report? We'd love to hear from you.</p>
     </div>
   </div>
   <section class="section wrap">
-    <form class="contact-form" action="mailto:hello@mymygirl.com" method="post" enctype="text/plain">
-      <div>
-        <label for="name">Name</label>
-        <input id="name" name="name" type="text" required />
-      </div>
-      <div>
-        <label for="email">Email</label>
-        <input id="email" name="email" type="email" required />
-      </div>
-      <div>
-        <label for="message">Message</label>
-        <textarea id="message" name="message" rows="5" required></textarea>
-      </div>
-      <button class="btn btn-primary" type="submit">Send message</button>
-      <p style="font-size:0.85rem;color:var(--chocolate-soft);">
-        Prefer social? Message us on Instagram or Facebook — we're usually faster there.
-      </p>
-    </form>
+    <div class="contact-form">
+      ${embedUrl && publicUrl ? `
+      <iframe class="contact-form-frame" src="${escapeHtml(embedUrl)}"
+        title="Contact MyMyGirl" width="640" height="1100">Loading contact form...</iframe>
+      <p class="contact-form-help">Having trouble with the form? <a href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener noreferrer">Open it in a new tab</a>.</p>
+      ` : '<p class="contact-form-help">Our contact form is temporarily unavailable. Please try again later.</p>'}
+    </div>
   </section>
   `;
 }

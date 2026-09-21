@@ -5,6 +5,8 @@ export interface Product {
   imageUrl: string;
   affiliateLink: string;
   price?: string;
+  type?: string;
+  date?: string;
   description?: string;
   status: string;
 }
@@ -21,6 +23,7 @@ export interface Env {
   SHEET_RANGE: string;
 
   // Secrets (wrangler secret put / .dev.vars)
+  CONTACT_FORM_URL?: string;
   GOOGLE_SERVICE_ACCOUNT_EMAIL: string;
   GOOGLE_PRIVATE_KEY: string;
   RESYNC_SECRET: string;

@@ -7,3 +7,6 @@ GOOGLE_SERVICE_ACCOUNT_EMAIL="demo-service-account@demo-project.iam.gserviceacco
 GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEY\n-----END PRIVATE KEY-----\n"
 GOOGLE_SHEET_ID="demo-sheet-id"
 RESYNC_SECRET="demo-resync-secret-change-me"
+
+# Full published Google Forms URL ending in /viewform.
+CONTACT_FORM_URL=""

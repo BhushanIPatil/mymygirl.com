@@ -19,7 +19,6 @@ export function productCard(p: Product, opts: { highlight?: boolean } = {}): str
     <div class="body">
       <a class="category-tag" href="/category/${categoryToSlug(p.category)}">${escapeHtml(p.category)}</a>
       <h3>${escapeHtml(p.name)}</h3>
-      ${p.price ? `<div class="price">${escapeHtml(p.price)}</div>` : ''}
       <div class="code">Code: ${escapeHtml(p.code)}</div>
       <a class="btn btn-primary btn-block" href="/go/${encodeURIComponent(p.code)}" rel="sponsored nofollow noopener" target="_blank">Shop now</a>
     </div>

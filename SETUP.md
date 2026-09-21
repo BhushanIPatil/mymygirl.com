@@ -145,5 +145,29 @@ so refreshing the site after a sheet edit is one tap.
 | `/api/resync` returns 401 | Wrong `key` query param, or `RESYNC_SECRET` wasn't set with `wrangler secret put` |
 | `/api/resync` returns a Google auth error | Service account email/private key wrong, or the Sheets API isn't enabled on the Google Cloud project |
 | `/api/resync` returns a 403 from Sheets | The sheet isn't shared with the service account's email (Viewer access) |
-| A product doesn't show up | Its Status column isn't blank or "Active" |
+| A product doesn't show up | Its status is Inactive, or product_code / affiliate_link is blank |
 | Images look broken | Image URL column isn't a direct, publicly-accessible image link |
+
+## Google Sheet headers, product type and date
+
+Put these snake_case headers in row 1; product data starts in row 2:
+
+```text
+product_code	product_name	category	image_url	affiliate_link	price	description	status	type	date
+```
+
+Columns are matched by header name and may be reordered within the configured range.
+The first five headers are required; the others are optional. Legacy labels such as
+Product Code remain supported. Duplicate or missing required headers cause a sync
+error and preserve the previous cache. Prices are not displayed.
+
+The final two optional fields control the homepage carousel and date filters:
+
+| Column | Header | Value |
+| --- | --- | --- |
+| I | type | `carausel` to include the product in the hero carousel (`carousel` is also accepted) |
+| J | date | `YYYY-MM-DD`, for example `2026-09-21`; use plain text or this date display format in Sheets |
+
+Use `SHEET_RANGE = "Products!A1:J"`, including any local or deployed override. Resync after updating the sheet. Fresh picks and the Fresh filter include today and the previous six days (UTC). Date-range endpoints are inclusive; products without a valid date remain in the catalog but are excluded from date filters. The catalog shows dated products newest first.
+
+Migration: change any old range starting at A2 to `Products!A1:J` in wrangler.toml, local `.dev.vars`, and any deployed overrides. The range must include headers. Deploy and resync after making these changes.

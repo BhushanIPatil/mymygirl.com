@@ -1,3 +1,4 @@
+import { brandText } from '../lib/html';
 import { globalStyles } from '../styles';
 import type { Env } from '../types';
 
@@ -41,7 +42,7 @@ export function layout(opts: LayoutOptions): string {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💗</text></svg>" />
+  <link rel="icon" type="image/png" href="/mymygirl_fav.png" />
 
   ${structuredDataJson ? `<script type="application/ld+json">${structuredDataJson}</script>` : ''}
 
@@ -50,7 +51,7 @@ export function layout(opts: LayoutOptions): string {
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="logo" href="/">MyMy<span>Girl</span></a>
+      <a class="logo" href="/" aria-label="mymygirl home"><img src="/mymygirl_logo.png" alt="mymygirl" /></a>
 
       <input type="checkbox" id="nav-check" class="nav-toggle" aria-hidden="true" style="display:none" />
       <label for="nav-check" class="nav-toggle" aria-label="Toggle menu">☰</label>
@@ -72,7 +73,7 @@ export function layout(opts: LayoutOptions): string {
   <footer class="site-footer">
     <div class="wrap">
       <div>
-        <h4>MYMYGIRL</h4>
+        <a class="logo footer-logo" href="/" aria-label="mymygirl home"><img src="/mymygirl_logo.png" alt="mymygirl" loading="lazy" /></a>
         <p>${env.SITE_TAGLINE}</p>
       </div>
       <div>
@@ -92,7 +93,7 @@ export function layout(opts: LayoutOptions): string {
       </div>
     </div>
     <div class="footer-bottom">
-      © ${new Date().getFullYear()} ${env.SITE_NAME}. As an Amazon Associate and affiliate partner, we may earn from qualifying purchases.
+      © ${new Date().getFullYear()} ${brandText(env.SITE_NAME)}. As an Amazon Associate and affiliate partner, we may earn from qualifying purchases.
     </div>
   </footer>
 </body>

@@ -1,3 +1,4 @@
+import { brandText } from '../lib/html';
 export interface FaqItem {
   question: string;
   answer: string;
@@ -56,7 +57,7 @@ export function faqView(): string {
   <div class="page-header">
     <div class="wrap">
       <h1>Frequently asked questions</h1>
-      <p>Everything about product codes, links and how MyMyGirl works.</p>
+      <p>Everything about product codes, links and how ${brandText()} works.</p>
     </div>
   </div>
   <section class="section wrap">
@@ -65,7 +66,7 @@ export function faqView(): string {
         .map(
           (item) => `<details class="faq-item">
         <summary>${item.question}</summary>
-        <p>${item.answer}</p>
+        <p>${brandText(item.answer)}</p>
       </details>`,
         )
         .join('\n')}
