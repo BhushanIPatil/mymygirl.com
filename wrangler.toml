@@ -1,0 +1,42 @@
+name = "mymygirl-website"
+main = "src/index.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# --------------------------------------------------------------------------
+# KV namespace: caches the product list fetched from Google Sheets.
+# Create it with:  wrangler kv namespace create PRODUCTS_KV
+# Then replace the two placeholder ids below with the real ones it prints.
+# --------------------------------------------------------------------------
+[[kv_namespaces]]
+binding = "PRODUCTS_KV"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+preview_id = "REPLACE_WITH_YOUR_KV_PREVIEW_NAMESPACE_ID"
+
+# --------------------------------------------------------------------------
+# Plain (non-secret) config. Safe to commit — no credentials live here.
+# --------------------------------------------------------------------------
+[vars]
+SITE_NAME = "MyMyGirl"
+SITE_URL = "https://mymygirl.com"
+SITE_TAGLINE = "Pretty things, one code away."
+GOOGLE_SHEET_ID = "DEMO_SHEET_ID_REPLACE_ME"
+SHEET_RANGE = "Products!A2:H"
+
+# --------------------------------------------------------------------------
+# SECRETS — never put real values here, and this file IS committed to git.
+# Set each one with:
+#   wrangler secret put GOOGLE_SERVICE_ACCOUNT_EMAIL
+#   wrangler secret put GOOGLE_PRIVATE_KEY
+#   wrangler secret put RESYNC_SECRET
+# For local dev, put real values in a .dev.vars file instead (gitignored) —
+# see .dev.vars.example for the format.
+# --------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------
+# Once the domain is on Cloudflare, attach it here (or do it in the
+# dashboard under Workers & Pages > your worker > Settings > Domains).
+# --------------------------------------------------------------------------
+# [[routes]]
+# pattern = "mymygirl.com/*"
+# custom_domain = true

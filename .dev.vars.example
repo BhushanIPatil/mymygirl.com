@@ -1,0 +1,9 @@
+# Copy this file to ".dev.vars" (same folder) and fill in real values.
+# ".dev.vars" is gitignored — it will never be committed.
+# These are DEMO placeholders only; the site runs fine without real ones
+# (it falls back to sample demo products) so you can preview it first.
+
+GOOGLE_SERVICE_ACCOUNT_EMAIL="demo-service-account@demo-project.iam.gserviceaccount.com"
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEYDEMOKEY\n-----END PRIVATE KEY-----\n"
+GOOGLE_SHEET_ID="demo-sheet-id"
+RESYNC_SECRET="demo-resync-secret-change-me"
