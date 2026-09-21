@@ -53,6 +53,9 @@ export function layout(opts: LayoutOptions): string {
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
 
   <link rel="icon" type="image/png" href="/mymygirl_fav.png" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="theme-color" content="#FFF8F4" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
 
   ${structuredDataJson ? `<script type="application/ld+json">${structuredDataJson}</script>` : ''}
 

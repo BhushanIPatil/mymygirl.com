@@ -111,7 +111,6 @@ export function faqView(): string {
       </details>`,
         )
         .join('\n')}
-      <p>Further reading: <a href="https://www.coach.com/stories/guides/leather-care">Coach leather care guidance</a> and <a href="https://www.whatgoesaroundnyc.com/en-us/about-wgaca.html">About What Goes Around Comes Around</a>.</p>
       <p><a href="/products">Browse our current product picks</a>.</p>
     </div>
   </section>

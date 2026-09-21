@@ -1,5 +1,7 @@
 import logo from '../mymygirl_logo.png';
 import favicon from '../mymygirl_fav.png';
+import icon192 from './assets/icon-192.png';
+import icon512 from './assets/icon-512.png';
 import { normalizeDate } from './lib/products';
 import { Hono } from 'hono';
 import type { Env } from './types';
@@ -29,6 +31,22 @@ const app = new Hono<{ Bindings: Env }>();
 const PAGE_SIZE = 12;
 app.get('/mymygirl_logo.png', (c) => c.body(logo, 200, { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }));
 app.get('/mymygirl_fav.png', (c) => c.body(favicon, 200, { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }));
+app.get('/icons/icon-192.png', (c) => c.body(icon192, 200, { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }));
+app.get('/icons/icon-512.png', (c) => c.body(icon512, 200, { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=86400' }));
+app.get('/manifest.webmanifest', (c) => c.body(JSON.stringify({
+  id: '/',
+  name: c.env.SITE_NAME,
+  short_name: c.env.SITE_NAME,
+  start_url: '/',
+  scope: '/',
+  display: 'standalone',
+  background_color: '#FFF8F4',
+  theme_color: '#FFF8F4',
+  icons: [
+    { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+    { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+  ],
+}), 200, { 'Content-Type': 'application/manifest+json', 'Cache-Control': 'public, max-age=3600' }));
 
 // ---------------------------------------------------------------------
 // Home
