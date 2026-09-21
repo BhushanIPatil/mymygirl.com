@@ -21,7 +21,7 @@ export function productCard(p: Product, opts: { highlight?: boolean } = {}): str
       <a class="category-tag" href="/category/${categoryToSlug(p.category)}">${escapeHtml(p.category)}</a>
       <div class="code">Code: ${escapeHtml(p.code)}</div>
       ${nameCharacters.length > 30 ? `<details class="product-name">
-        <summary><h3><span class="name-short">${escapeHtml(nameCharacters.slice(0, 30).join(''))}&hellip;</span><span class="name-full">${escapeHtml(p.name)}</span></h3><span class="text-toggle"><span class="when-closed">See more</span><span class="when-open">See less</span></span></summary>
+        <summary><h3><span class="name-short">${escapeHtml(nameCharacters.slice(0, 30).join(''))}&hellip;</span><span class="name-full">${escapeHtml(p.name)}</span><span class="text-toggle"><span class="when-closed">See more</span><span class="when-open"> See less</span></span></h3></summary>
       </details>` : `<h3>${escapeHtml(p.name)}</h3>`}
       ${p.description?.trim() ? `<details class="product-description">
         <summary class="text-toggle"><span class="when-closed">Show description</span><span class="when-open">Hide description</span></summary>

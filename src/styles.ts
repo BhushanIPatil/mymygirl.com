@@ -441,6 +441,7 @@ a { color: inherit; text-decoration: none; }
 .product-card details > summary { list-style: none; cursor: pointer; }
 .product-card details > summary::-webkit-details-marker { display: none; }
 .product-card .text-toggle { color: var(--pink-deep); font-size: 0.75rem; font-weight: 400; text-decoration: underline; }
+.product-name .text-toggle { white-space: nowrap; }
 .product-card .name-full, .product-card .when-open { display: none; }
 .product-card details[open] .name-full, .product-card details[open] .when-open { display: inline; }
 .product-card details[open] .name-short, .product-card details[open] .when-closed { display: none; }
